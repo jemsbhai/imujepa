@@ -187,3 +187,52 @@ pretraining and multi-dataset evaluation (Phase 2b/3).
 ### Artifacts
 - Checkpoint: experiments/exp_002_jepa_ucihar/checkpoints/best.pt
 - Results: experiments/exp_002_jepa_ucihar/results.json
+
+
+---
+
+## EXP-003: Multi-Seed MAE vs JEPA on UCI-HAR
+
+**Date:** 2026-05-25
+**Type:** computational
+**Status:** completed
+
+### Hypothesis
+The JEPA advantage over MAE observed in EXP-002 (single seed) is not a seed artifact
+and will hold consistently across 3 random seeds.
+
+### Independent Variables
+- Method: MAE vs JEPA (SIGReg)
+- Seeds: [42, 123, 456]
+
+### Dependent Variables / Metrics
+- Linear probe accuracy, macro-F1, weighted-F1 (mean ± std across seeds)
+
+### Control Conditions
+- Everything identical between MAE and JEPA except the training objective
+- Same encoder (ViT-Small), same config, same data, same eval protocol
+
+### Results
+| Method       | Accuracy         | Macro-F1          | Weighted-F1       |
+|--------------|------------------|-------------------|-------------------|
+| MAE          | 0.7905 ± 0.0031  | 0.7985 ± 0.0031   | 0.7892 ± 0.0031   |
+| JEPA (SIGReg)| 0.8301 ± 0.0009  | 0.8360 ± 0.0010   | 0.8315 ± 0.0007   |
+| **Delta**    | **+0.0396**      | **+0.0376**        | **+0.0423**       |
+
+- JEPA wins on 3/3 seeds
+- JEPA variance is ~3x lower than MAE (0.10% vs 0.31% std on macro-F1)
+
+### Observations
+- The +3.8% gap is consistent and statistically stable across all seeds.
+- JEPA's lower variance suggests SIGReg provides more stable training dynamics
+  than MAE's reconstruction objective.
+- This is still single-dataset (UCI-HAR). Cross-dataset evaluation needed for
+  publication-strength generalization claims.
+
+### Interpretation
+Gate 2 is cleared with high confidence. The JEPA advantage is not a seed artifact.
+The gap (+3.8%) exceeds the 1% threshold by nearly 4x, and the lower variance is
+an additional selling point. Ready to proceed to cross-dataset evaluation.
+
+### Artifacts
+- Results: experiments/exp_003_multiseed/results.json

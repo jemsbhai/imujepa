@@ -1,0 +1,105 @@
+{
+  "experiment": "EXP-003",
+  "name": "Multi-seed MAE vs JEPA on UCI-HAR",
+  "timestamp": "2026-05-25T08:41:10.608598",
+  "seeds": [
+    42,
+    123,
+    456
+  ],
+  "epochs": 100,
+  "results": {
+    "mae": {
+      "per_seed": [
+        {
+          "accuracy": 0.7943671530369868,
+          "macro_f1": 0.8026556607538864,
+          "weighted_f1": 0.7932527680659297,
+          "n_train": 7296,
+          "n_test": 2947,
+          "embed_dim": 384,
+          "extract_time_s": 0.33,
+          "total_time_s": 5.45,
+          "seed": 42,
+          "final_train_loss": 0.433825
+        },
+        {
+          "accuracy": 0.7869019341703427,
+          "macro_f1": 0.7951090025002373,
+          "weighted_f1": 0.785800003970406,
+          "n_train": 7296,
+          "n_test": 2947,
+          "embed_dim": 384,
+          "extract_time_s": 0.36,
+          "total_time_s": 19.77,
+          "seed": 123,
+          "final_train_loss": 0.431692
+        },
+        {
+          "accuracy": 0.7902952154733628,
+          "macro_f1": 0.7977103852669855,
+          "weighted_f1": 0.7885683567745976,
+          "n_train": 7296,
+          "n_test": 2947,
+          "embed_dim": 384,
+          "extract_time_s": 0.41,
+          "total_time_s": 6.26,
+          "seed": 456,
+          "final_train_loss": 0.427663
+        }
+      ],
+      "accuracy_mean": 0.7905214342268975,
+      "accuracy_std": 0.0030518578358176927,
+      "macro_f1_mean": 0.7984916828403698,
+      "macro_f1_std": 0.003130051343878624,
+      "weighted_f1_mean": 0.7892070429369777,
+      "weighted_f1_std": 0.003075913216850559
+    },
+    "jepa": {
+      "per_seed": [
+        {
+          "accuracy": 0.829317950458093,
+          "macro_f1": 0.8347655793051391,
+          "weighted_f1": 0.8306941650012921,
+          "n_train": 7296,
+          "n_test": 2947,
+          "embed_dim": 384,
+          "extract_time_s": 0.28,
+          "total_time_s": 1.37,
+          "seed": 42,
+          "final_train_loss": 0.42177
+        },
+        {
+          "accuracy": 0.831353919239905,
+          "macro_f1": 0.8372792574113546,
+          "weighted_f1": 0.8324774076989166,
+          "n_train": 7296,
+          "n_test": 2947,
+          "embed_dim": 384,
+          "extract_time_s": 0.26,
+          "total_time_s": 1.06,
+          "seed": 123,
+          "final_train_loss": 0.430757
+        },
+        {
+          "accuracy": 0.829657278588395,
+          "macro_f1": 0.8361001871641589,
+          "weighted_f1": 0.8313730906987823,
+          "n_train": 7296,
+          "n_test": 2947,
+          "embed_dim": 384,
+          "extract_time_s": 0.26,
+          "total_time_s": 1.02,
+          "seed": 456,
+          "final_train_loss": 0.435948
+        }
+      ],
+      "accuracy_mean": 0.8301097160954644,
+      "accuracy_std": 0.0008906241232905496,
+      "macro_f1_mean": 0.8360483412935508,
+      "macro_f1_std": 0.0010268594195056162,
+      "weighted_f1_mean": 0.8315148877996638,
+      "weighted_f1_std": 0.0007348779685642058
+    }
+  }
+}

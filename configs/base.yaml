@@ -1,0 +1,70 @@
+# IMU-JEPA Base Configuration
+# All experiment configs inherit from this and override specific values.
+
+# --- Seed ---
+seed: 42
+
+# --- Data ---
+data:
+  sample_rate: 100          # Hz (all datasets resampled to this)
+  window_length: 500        # samples (5 seconds at 100Hz)
+  window_stride: 500        # samples (non-overlapping by default)
+  channels: 6               # acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z
+  normalize: "per_subject"  # z-score per subject
+
+# --- Model ---
+model:
+  # Patch tokenizer
+  patch_length: 25          # samples per patch (0.25s at 100Hz)
+  num_patches: 20           # window_length / patch_length
+
+  # Encoder (ViT-Small)
+  encoder:
+    embed_dim: 384
+    num_layers: 6
+    num_heads: 6
+    mlp_ratio: 4.0
+    dropout: 0.0
+
+  # Predictor (lightweight)
+  predictor:
+    embed_dim: 384
+    num_layers: 2
+    num_heads: 4
+    mlp_ratio: 4.0
+
+# --- JEPA Objective ---
+jepa:
+  masking_strategy: "random"   # random | block | cross_channel
+  masking_ratio: 0.70          # fraction of patches masked
+  loss: "smooth_l1"            # smooth_l1 | mse
+
+  # Target encoder
+  target_mode: "sigreg"        # ema | sigreg | hybrid
+  ema_momentum_start: 0.996    # only used if target_mode=ema
+  ema_momentum_end: 1.0
+
+  # SIGReg regularization (used if target_mode=sigreg or hybrid)
+  sigreg:
+    lambda_var: 1.0
+    lambda_cov: 0.04
+
+# --- Training ---
+training:
+  epochs: 100
+  batch_size: 256
+  optimizer: "adamw"
+  learning_rate: 1.5e-4
+  weight_decay: 0.05
+  warmup_epochs: 10
+  lr_schedule: "cosine"
+  mixed_precision: true        # torch.cuda.amp
+  gradient_clip: 1.0
+  num_workers: 4
+
+# --- Evaluation ---
+evaluation:
+  protocol: "linear_probe"     # linear_probe | finetune | knn
+  finetune_epochs: 50
+  finetune_lr: 1.0e-4
+  seeds: [42, 123, 456]        # 3-seed evaluation for all results

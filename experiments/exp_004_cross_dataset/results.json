@@ -1,0 +1,34 @@
+{
+  "experiment": "EXP-004",
+  "name": "Cross-dataset leave-one-out: MAE vs JEPA",
+  "timestamp": "2026-05-25",
+  "datasets": ["uci_har", "pamap2", "dsads", "mhealth", "usc_had"],
+  "config": {
+    "seed": 42, "epochs": 100, "batch_size": 128,
+    "lr": 0.00015, "mask_ratio": 0.75, "patch_len": 16
+  },
+  "results_macro_f1": {
+    "mae": {
+      "uci_har": 0.8445,
+      "pamap2": 0.6879,
+      "dsads": 0.4684,
+      "mhealth": 0.5987,
+      "usc_had": 0.6335
+    },
+    "jepa": {
+      "uci_har": 0.8450,
+      "pamap2": 0.6371,
+      "dsads": 0.5061,
+      "mhealth": 0.6016,
+      "usc_had": 0.5967
+    }
+  },
+  "summary": {
+    "mae_avg_macro_f1": 0.6466,
+    "jepa_avg_macro_f1": 0.6373,
+    "delta": -0.0093,
+    "jepa_wins": 3,
+    "total_datasets": 5,
+    "total_time_min": 108.2
+  }
+}

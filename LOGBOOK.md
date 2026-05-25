@@ -236,3 +236,70 @@ an additional selling point. Ready to proceed to cross-dataset evaluation.
 
 ### Artifacts
 - Results: experiments/exp_003_multiseed/results.json
+
+
+---
+
+## EXP-004: Cross-Dataset Leave-One-Out Evaluation
+
+**Date:** 2026-05-25
+**Type:** computational
+**Status:** completed
+
+### Hypothesis
+JEPA's latent-prediction advantage over MAE, observed within-dataset on UCI-HAR
+(+3.8% macro-F1, EXP-003), will generalize to cross-dataset transfer where the
+model pretrains on 4 datasets and evaluates on a held-out 5th.
+
+### Independent Variables
+- Method: MAE vs JEPA (SIGReg)
+- Held-out dataset: each of 5 HAR benchmarks
+
+### Results
+| Held-out    | MAE    | JEPA   | Delta    |
+|-------------|--------|--------|----------|
+| UCI-HAR     | 0.8445 | 0.8450 | +0.0006  |
+| PAMAP2      | 0.6879 | 0.6371 | -0.0507  |
+| DSADS       | 0.4684 | 0.5061 | +0.0377  |
+| MHealth     | 0.5987 | 0.6016 | +0.0029  |
+| USC-HAD     | 0.6335 | 0.5967 | -0.0368  |
+| **AVERAGE** | **0.6466** | **0.6373** | **-0.0093** |
+
+JEPA wins on 3/5 datasets but **loses on average by -0.9%**.
+
+### Observations
+1. **The within-dataset advantage does NOT automatically transfer cross-domain.**
+   JEPA was +3.8% on UCI-HAR within-dataset, but only +0.06% cross-dataset.
+2. JEPA loses most heavily on PAMAP2 (-5.1%) and USC-HAD (-3.7%) — both are
+   sensor locations (hand, hip) underrepresented in pretraining.
+3. JEPA wins most on DSADS (+3.8%) — torso-mounted, many activities.
+4. Cross-dataset accuracy is much lower overall (~64% avg) compared to
+   within-dataset (~84%), indicating domain shift is the dominant challenge.
+5. This pattern matches the LuMamba finding: LeJEPA alone produces "diffuse
+   embeddings" that are less generalizable; a hybrid objective (JEPA + light
+   reconstruction) achieves the most robust cross-domain performance.
+
+### Interpretation
+**Gate 3 assessment: mixed.** JEPA does not clearly beat MAE on cross-dataset
+transfer with the current setup. However, this is NOT a dead end — it points
+toward specific improvements:
+
+1. **Hybrid objective (JEPA + lightweight MAE reconstruction loss)** — this is
+   exactly what LuMamba found necessary for cross-domain EEG generalization.
+   Adding a small reconstruction auxiliary loss may anchor the latent space
+   while preserving JEPA's semantic abstraction.
+
+2. **Cross-channel masking** — our current random patch masking doesn't force
+   the model to learn cross-sensor relationships. Cross-channel masking (mask
+   entire acc or gyro axes) may improve cross-device transfer.
+
+3. **Longer pretraining** — 100 epochs on ~30k windows may be insufficient
+   for JEPA to learn stable latent targets across heterogeneous data sources.
+
+4. **The story may be nuanced, not binary.** JEPA wins on DSADS (many classes,
+   fine-grained activities) but loses on PAMAP2/USC-HAD (different body locations).
+   This suggests JEPA is better for semantic discrimination but MAE is more
+   robust to domain shift. A paper can tell this story honestly.
+
+### Artifacts
+- Results: experiments/exp_004_cross_dataset/results.json

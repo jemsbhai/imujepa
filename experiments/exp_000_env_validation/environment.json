@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-05-25T07:40:03.526692",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "machine": "AMD64",
+  "python": "3.12.2",
+  "dependencies": {
+    "numpy": "2.4.4",
+    "scipy": "1.17.1",
+    "pandas": "2.3.3",
+    "sklearn": "1.5.2",
+    "h5py": "3.14.0",
+    "yaml": "6.0.3",
+    "omegaconf": "2.3.0",
+    "matplotlib": "3.9.2",
+    "seaborn": "0.13.2",
+    "tqdm": "4.67.3",
+    "einops": "0.8.1",
+    "pytest": "9.0.2"
+  },
+  "torch": {
+    "pytorch": "2.6.0+cu124",
+    "cuda_available": true,
+    "cuda_version": "12.4",
+    "gpu_name": "NVIDIA GeForce RTX 4090 Laptop GPU",
+    "gpu_memory_gb": 17.2,
+    "bf16_support": true
+  },
+  "forward_backward_ok": true,
+  "mixed_precision_ok": true
+}

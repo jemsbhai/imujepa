@@ -9,9 +9,9 @@
 
 ## EXP-000: Environment Validation
 
-**Date:** 2026-05-25
+**Date:** 2026-05-25 07:40 EST
 **Type:** computational
-**Status:** planned
+**Status:** completed
 
 ### Hypothesis
 Verify that the development environment (PyTorch, CUDA, mixed-precision) is correctly configured and can train a small ViT on synthetic IMU-shaped data.
@@ -29,26 +29,32 @@ Verify that the development environment (PyTorch, CUDA, mixed-precision) is corr
 - N/A
 
 ### Protocol
-1. Create and activate Python venv
-2. Install PyTorch with CUDA support
-3. Install project dependencies
-4. Run environment validation script (scripts/validate_env.py)
-5. Confirm GPU name, VRAM, CUDA version, PyTorch version in output
+1. Run scripts/validate_env.py
+2. Verify all checks pass
+3. Inspect environment.json snapshot
 
 ### Environment
-- **Hardware:** RTX 4090 (24GB), 64GB RAM
-- **Software:** Windows, Python 3.11+, PyTorch 2.x, CUDA 12.x
-- **Git commit:** (initial commit)
+- **Hardware:** NVIDIA GeForce RTX 4090 Laptop GPU (17.2 GB VRAM), 64GB RAM, AMD64
+- **Software:** Windows 11 (10.0.26200), Python 3.12.2, PyTorch 2.6.0+cu124, CUDA 12.4, cuDNN 90100
+- **Git commit:** initial commit
 - **Seeds:** 42
 
 ### Results
-(pending)
+- All 12 dependencies present and importable
+- CUDA available, BF16 supported
+- Forward/backward pass on synthetic (8, 500, 6) IMU tensor: OK
+- Mixed-precision (FP16) autocast: OK
+- No missing packages
 
 ### Observations
-(pending)
+- GPU is the Laptop variant (17.2GB VRAM vs 24GB desktop). Still ample for
+  our model sizes (5-10M params). Batch size may need to be 128 instead of
+  256 if VRAM pressure appears during full JEPA training, but unlikely.
+- pynvml deprecation warning present (cosmetic, no functional impact).
+- All dependency versions are recent (numpy 2.4, scipy 1.17, PyTorch 2.6).
 
 ### Interpretation
-(pending)
+Environment is fully operational. Ready to proceed to Phase 1 (baseline reproduction).
 
 ### Artifacts
-- Logs: experiments/exp_000_env_validation/logs/
+- Environment snapshot: experiments/exp_000_env_validation/environment.json

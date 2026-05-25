@@ -26,12 +26,15 @@ def check_torch():
     print(f"CUDA available: {torch.cuda.is_available()}")
 
     if torch.cuda.is_available():
+        props = torch.cuda.get_device_properties(0)
+        gpu_mem = props.total_memory / 1e9
         print(f"CUDA version: {torch.version.cuda}")
         print(f"cuDNN version: {torch.backends.cudnn.version()}")
         print(f"GPU: {torch.cuda.get_device_name(0)}")
-        print(f"GPU memory: {torch.cuda.get_device_properties(0).total_mem / 1e9:.1f} GB")
+        print(f"GPU memory: {gpu_mem:.1f} GB")
         print(f"BF16 support: {torch.cuda.is_bf16_supported()}")
     else:
+        gpu_mem = None
         print("WARNING: CUDA not available. Training will be very slow on CPU.")
 
     return {
@@ -39,7 +42,7 @@ def check_torch():
         "cuda_available": torch.cuda.is_available(),
         "cuda_version": torch.version.cuda if torch.cuda.is_available() else None,
         "gpu_name": torch.cuda.get_device_name(0) if torch.cuda.is_available() else None,
-        "gpu_memory_gb": round(torch.cuda.get_device_properties(0).total_mem / 1e9, 1) if torch.cuda.is_available() else None,
+        "gpu_memory_gb": round(gpu_mem, 1) if gpu_mem else None,
         "bf16_support": torch.cuda.is_bf16_supported() if torch.cuda.is_available() else False,
     }
 
@@ -169,7 +172,7 @@ def main():
     missing = [k for k, v in env_info.get("dependencies", {}).items() if v == "MISSING"]
     if missing:
         print(f"FAIL: Missing packages: {', '.join(missing)}")
-        print("Run: pip install -r requirements.txt")
+        print("Run: pip install " + " ".join(missing))
     elif not env_info.get("torch", {}).get("cuda_available", False):
         print("WARN: No CUDA GPU detected. Training will be CPU-only.")
     else:

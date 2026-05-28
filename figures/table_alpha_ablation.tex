@@ -1,0 +1,19 @@
+\begin{table}[t]
+\centering
+\caption{Hybrid mixing weight ablation (cross-dataset LP, macro-F1).}
+\label{tab:alpha}
+\begin{tabular}{lccccc}
+\toprule
+Held-out & $\alpha$=0 & $\alpha$=0.1 & $\alpha$=0.25 & $\alpha$=\textbf{0.5} & $\alpha$=1.0 \\
+ & (JEPA) & & & & (MAE) \\
+\midrule
+UCI-HAR & 0.858 & 0.857 & 0.867 & 0.857 & 0.830 \\
+PAMAP2 & 0.614 & 0.640 & 0.645 & 0.642 & 0.678 \\
+DSADS & 0.485 & 0.507 & 0.507 & 0.532 & 0.460 \\
+MHealth & 0.581 & 0.536 & 0.624 & 0.682 & 0.653 \\
+USC-HAD & 0.584 & 0.629 & 0.632 & 0.599 & 0.642 \\
+\midrule
+\textbf{Average} & 0.624 & 0.634 & 0.655 & \textbf{0.662} & 0.652 \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,20 @@
+\begin{table*}[t]
+\centering
+\caption{Cross-dataset leave-one-out results (macro-F1). Pretrain on 4 datasets, evaluate on the held-out dataset.}
+\label{tab:cross}
+\begin{tabular}{lcccccc}
+\toprule
+& \multicolumn{2}{c}{MAE} & \multicolumn{2}{c}{JEPA (SIGReg)} & \multicolumn{2}{c}{\textbf{Hybrid (ours)}} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+Held-out & LP & FT & LP & FT & LP & FT \\
+\midrule
+UCI-HAR & 0.829 & 0.918 & 0.857 & 0.906 & 0.855 & 0.910 \\
+PAMAP2 & 0.673 & 0.668 & 0.623 & 0.638 & 0.647 & 0.624 \\
+DSADS & 0.461 & 0.512 & 0.486 & 0.545 & 0.530 & 0.565 \\
+MHealth & 0.655 & 0.649 & 0.574 & 0.694 & 0.699 & 0.734 \\
+USC-HAD & 0.638 & 0.731 & 0.584 & 0.667 & 0.600 & 0.695 \\
+\midrule
+\textbf{Average} & 0.651 & 0.696 & 0.625 & 0.690 & \textbf{0.666} & \textbf{0.706} \\
+\bottomrule
+\end{tabular}
+\end{table*}

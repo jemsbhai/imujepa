@@ -68,3 +68,6 @@ mlruns/
 *.npy
 *.npz
 *.mmap
+
+# Paper (managed via Overleaf, not git)
+paper/

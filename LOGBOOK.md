@@ -403,3 +403,54 @@ Best alpha: **0.5** (avg macro-F1 = 0.6623, +1.0% over pure MAE)
 
 ### Artifacts
 - Results: experiments/exp_006_alpha_ablation/results.json
+
+
+---
+
+## EXP-007: Fine-Tune Evaluation
+
+**Date:** 2026-05-25
+**Type:** computational
+**Status:** completed
+
+### Hypothesis
+Fine-tuning (unfreezing encoder + training a linear head end-to-end) will boost all
+methods and may change relative rankings compared to linear probe.
+
+### Results — Within-Dataset UCI-HAR (3 seeds)
+| Method  | FT Macro-F1       | LP Macro-F1       | FT Lift |
+|---------|-------------------|-------------------|---------|
+| MAE     | 0.9081 ± 0.0026   | 0.8043 ± 0.0007   | +0.1038 |
+| JEPA    | 0.9015 ± 0.0026   | 0.8332 ± 0.0013   | +0.0682 |
+| Hybrid  | 0.9155 ± 0.0044   | 0.8511 ± 0.0013   | +0.0645 |
+
+### Results — Cross-Dataset Fine-Tune (Macro-F1)
+| Held-out | MAE-FT | JEPA-FT | Hybrid-FT | Best   |
+|----------|--------|---------|-----------|--------|
+| UCI-HAR  | 0.9175 | 0.9062  | 0.9103    | MAE    |
+| PAMAP2   | 0.6684 | 0.6377  | 0.6236    | MAE    |
+| DSADS    | 0.5120 | 0.5450  | 0.5655    | HYBRID |
+| MHealth  | 0.6490 | 0.6937  | 0.7341    | HYBRID |
+| USC-HAD  | 0.7313 | 0.6670  | 0.6948    | MAE    |
+| **AVG**  | **0.6957** | **0.6899** | **0.7057** | **HYBRID** |
+
+Hybrid FT vs MAE FT: **+1.0%**
+
+### Key Findings
+1. **Hybrid wins both regimes under fine-tuning** — within-dataset (91.6% vs
+   MAE 90.8%) and cross-dataset (70.6% vs MAE 69.6%).
+2. **Fine-tuning narrows the JEPA-MAE gap cross-domain.** JEPA goes from -2.8%
+   (LP) to -0.6% (FT) vs MAE — fine-tuning partially recovers JEPA's cross-domain
+   weakness by adapting the encoder to the target domain.
+3. **MAE benefits most from fine-tuning** (+10.4% within-dataset) because its
+   frozen representations are less semantically structured, so end-to-end training
+   has more room to improve. JEPA and Hybrid benefit less (+6.5-6.8%) because their
+   LP representations are already stronger.
+4. **Hybrid shines on fine-grained activities.** MHealth FT: Hybrid 73.4% vs MAE
+   64.9% (+8.5%) — the largest single-dataset gap in any experiment.
+5. **The +1.0% cross-dataset advantage for Hybrid is consistent between LP and FT,**
+   suggesting it's a stable property of the representation, not an artifact of the
+   evaluation protocol.
+
+### Artifacts
+- Results: experiments/exp_007_finetune/results.json
